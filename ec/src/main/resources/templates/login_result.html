@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Spring-Shopsite</title>
+</head>
+<body>
+<p th:text="${message}"></p>
+<div th:if="${#strings.equals(message, 'ログインに成功しました')}">
+<a href="/admin_menu">管理者向けメニュー</a>
+</div>
+<div th:if="${#strings.equals(message, 'ログインに失敗しました')}">
+<a href="/login">ログインし直してください</a>
+</div>
+</body>
+</html>
