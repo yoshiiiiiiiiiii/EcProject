@@ -1,4 +1,4 @@
-package com.example.application;
+package com.example.application.serviceImpl;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -11,8 +11,13 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.example.application.form.ProductForm;
+import com.example.application.service.EcService;
+
 @Service
-public class EcService {
+public class EcServiceImpl implements EcService {
+
+	@Override
 	public List<String> selectAll() {
 		List<String> entities = null;
 		entities = new ArrayList<String>();
@@ -20,14 +25,14 @@ public class EcService {
 		Connection connection = null;
 
 		try {
-			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/sample?serverTimezone=JST", "root",
-					"root");
+			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/spring_test", "yoshinari",
+					"yoshinari0403");
 			Statement statement = connection.createStatement();
 			resultSet = statement.executeQuery("select * from product");
 
 			while (resultSet.next()) {
-				String str = resultSet.getString("code") + "  " + resultSet.getString("name") + "  "
-						+ resultSet.getString("description") + "  " + resultSet.getString("price") + "  "
+				String str = "No." + resultSet.getString("code") + "  商品名：" + resultSet.getString("name") + "  説明："
+						+ resultSet.getString("description") + "  値段：" + resultSet.getString("price") + "  評価："
 						+ resultSet.getString("evaluation");
 				entities.add(str);
 			}
@@ -43,12 +48,13 @@ public class EcService {
 		return entities;
 	}
 
+	@Override
 	public void insert(ProductForm productForm) {
 		Connection connection = null;
 
 		try {
-			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/sample?serverTimezone=JST", "root",
-					"root");
+			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/spring_test", "yoshinari",
+					"yoshinari0403");
 			PreparedStatement statement = connection.prepareStatement("INSERT INTO product VALUES (?, ?, ?, ?, ?)");
 
 			statement.setString(1, productForm.getCode());
@@ -69,12 +75,13 @@ public class EcService {
 		}
 	}
 
+	@Override
 	public void update(ProductForm productForm) {
 		Connection connection = null;
 
 		try {
-			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/sample?serverTimezone=JST", "root",
-					"root");
+			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/spring_test", "yoshinari",
+					"yoshinari0403");
 			PreparedStatement statement = connection.prepareStatement(
 					"UPDATE product SET code=?, name=?, description=?, price=?, evaluation=? WHERE code=?");
 
@@ -97,12 +104,13 @@ public class EcService {
 		}
 	}
 
+	@Override
 	public void delete(ProductForm productForm) {
 		Connection connection = null;
 
 		try {
-			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/sample?serverTimezone=JST", "root",
-					"root");
+			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/spring_test", "yoshinari",
+					"yoshinari0403");
 			PreparedStatement statement = connection.prepareStatement("DELETE FROM product WHERE code=?");
 
 			statement.setString(1, productForm.getCode());
