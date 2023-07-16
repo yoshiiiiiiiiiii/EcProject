@@ -1,4 +1,4 @@
-package com.example.application;
+package com.example.application.controller;
 
 import java.util.List;
 import java.util.Map;
@@ -11,13 +11,20 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.example.application.form.LoginForm;
+import com.example.application.form.ProductForm;
+import com.example.application.serviceImpl.EcServiceImpl;
+
+/*
+ * コントローラークラス：アプリケーション層に位置し、serviceの呼び出しや、htmlにデータを受け渡す役割を持つ
+ */
 @Controller
 public class EcController {
 	@Autowired
 	JdbcTemplate jdbcTemplate;
 
 	@Autowired
-	private EcService ecService;
+	private EcServiceImpl ecService;
 
 	@ModelAttribute
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
