@@ -1,5 +1,8 @@
 package com.example.application.controller;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Map;
 
@@ -45,15 +48,28 @@ public class EcController {
 		list = jdbcTemplate.queryForList("select * from user");
 
 		for (int i = 0; i < list.size(); i++) {
-			if (("[" + loginForm.getId() + "," + " " + loginForm.getName() + "]")
-					.compareTo((list.get(i).values().toString())) == 0) {
-				model.addAttribute("message", "ログインに成功しました");
-				break;
+
+			try {
+				
+				MessageDigest sha256;
+				sha256 = MessageDigest.getInstance("SHA-256");
+				byte[] sha256Result = sha256.digest(loginForm.getPassword().getBytes());
+				String password = String.format("%040x", new BigInteger(1, sha256Result));
+				if (("[" + loginForm.getId() + "," + " " + loginForm.getName() + "," + " " + password + "]")
+						.compareTo((list.get(i).values().toString())) == 0) {
+					model.addAttribute("message", "ログインに成功しました");
+					break;
+				}
+
+				else {
+					model.addAttribute("message", "ログインに失敗しました");
+				}
+				
+			} catch (NoSuchAlgorithmException e) {
+				
+				model.addAttribute("message", "ログインに失敗しました(パスワードかIDに誤りがあります。)");
 			}
 
-			else {
-				model.addAttribute("message", "ログインに失敗しました");
-			}
 		}
 
 		return "login_result";
